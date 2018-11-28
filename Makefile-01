@@ -1,0 +1,22 @@
+
+FC = gfortran
+FCLFAGS = -g -O2 -Wall -Wextra -ffree-form
+
+SRC_F90 = $(wildcard *.f90)
+SRC_OBJ = $(patsubst %.f90, %.o, ${SRC_F90})
+SRC_EXE = run.exe
+
+.PHONY: all clean
+all: compile link
+
+compile: ${SRC_OBJ}
+link: ${SRC_EXE}
+
+%.o : %.f90
+	${FC} ${FCFLAGS} -c $< -I. -o $@
+
+${SRC_EXE}: ${SRC_OBJ}
+	${FC} ${FCFLAGS} -I. $^ -o $@
+
+clean:
+	rm -rf *.mod ${SRC_OBJ} ${SRC_EXE}
